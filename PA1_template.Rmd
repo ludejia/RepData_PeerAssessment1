@@ -1,10 +1,3 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
-
 
 ## Loading and preprocessing the data
 1. Read the data
@@ -74,5 +67,13 @@ vs `r stepsmedian`. They are the same except for the median as I used mean to im
 ## Are there differences in activity patterns between weekdays and weekends?
 
 
-
-
+Create a new column to assign the day('Monday', 'Tuesday',...) in a week and 
+creat another column to assgn 'weekday' or 'weekend'
+```{r}
+newdat$week=weekdays(as.Date(newdat$date,"%Y-%m-%d"))
+newdat$weektype=ifelse(newdat$week=='Sunday'|newdat$week=='Saturday',
+                            'Weekend','Weekday')
+activityweekend=aggregate(steps~interval+weektype, newdat, mean)
+qplot(interval, steps, data = activityweekend, geom = 'line' , facets = 
+              weektype~., color=weektype)
+```
