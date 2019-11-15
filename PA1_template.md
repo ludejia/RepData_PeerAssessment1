@@ -90,3 +90,18 @@ vs 10765. They are the same except for the median as I used mean to impute.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+
+Create a new column to assign the day('Monday', 'Tuesday',...) in a week and 
+creat another column to assgn 'weekday' or 'weekend'
+
+```r
+newdat$week=weekdays(as.Date(newdat$date,"%Y-%m-%d"))
+newdat$weektype=ifelse(newdat$week=='Sunday'|newdat$week=='Saturday',
+                            'Weekend','Weekday')
+activityweekend=aggregate(steps~interval+weektype, newdat, mean)
+qplot(interval, steps, data = activityweekend, geom = 'line' , facets = 
+              weektype~., color=weektype)
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
